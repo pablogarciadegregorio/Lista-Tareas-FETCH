@@ -72,7 +72,7 @@ function getList() {
         method:'GET'
     })//busca informacion a la url dada con el metodo especificado
     .then((response)=>response.json())// => convierto la respuesta buscada en un json => {"info":{},"results":[]} "hola"
-    .then((data)=> {setListaTareas(data.label)
+    .then((data)=> {setListaTareas(data)
                     console.log(data.label)})// => guardo el json en un espacio de memoria
     .catch((error)=>console.log(error))// => te aviso si algo sale mal
 }

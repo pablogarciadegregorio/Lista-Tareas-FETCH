@@ -9,27 +9,40 @@ const Form = () => {
 // DECLARACIONDE ESTADOS    
     const[tareaApi, setTareaApi] = useState("");
     const[listaApi, setListaApi] = useState([]);
+
+
+// USEEFFECT HACE LAS VECES DE UN ONLOAD
+
+useEffect(()=>{
+    getList(); 
+    
+      
+},[])
     
 
 //  FORM SUBMIT 
     const handleSubmit = (e) => {
-        if (tareaApi != ""){
+        if ((tareaApi != "") && (tareaApi != " ")){
         e.preventDefault();
-        saveList();
-        setListaApi(listaApi.concat(tareaApi));
-        
-        console.log(tareaApi);
+        setListaApi((previousList) => [...previousList, tareaApi])     
         setTareaApi("");
+        e.target.reset();
         
-        document.getElementById("Form").reset();
         }
 
-        else { console.log("Introduce una tarea no vacía")}
+        else { alert("Introduce una tarea no vacía")}
         
     }
 
     
-    console.log(listaApi);
+// USEEFFECT que maneja los cambios de la lista  sirve para agregar un elemento o para eliminarlo
+
+useEffect(()=>{      // Agregamos useEffect:  escucha los cambios de la lista y cuando haya un cambio llama
+    saveList();      // a la función que hace el fetch para actualizarla.
+     
+},[listaApi])
+
+
     
     
    
@@ -68,9 +81,21 @@ function borrarTarea(tarea){
     let tareaBorrada = listaApi.filter((tarea) => tarea != tareaActual);
     setListaApi(tareaBorrada);
     console.log(listaApi);
-    saveList();
 
 }
+
+
+// TRAER LISTA DE TAREAS DE LA API
+
+function getList() {
+    fetch('https://assets.breatheco.de/apis/fake/todos/user/pgdg',{
+        method:'GET'
+    })//busca informacion a la url dada con el metodo especificado
+    .then((response)=> { if (!response.ok) {crearUsuario()} return response.json()})// => convierto la respuesta buscada en un json y si no existe el usuario lo creo
+    .then((data)=> setListaApi(data))// => guardo el json en un espacio de memoria
+    .catch((error)=>console.log(error))// => te aviso si algo sale mal
+}
+
 
 
 // CREAR USUARIO DE LA API
@@ -91,30 +116,12 @@ function crearUsuario() {
 }
 
 
-// TRAER LISTA DE TAREAS DE LA API
-
-function getList() {
-    fetch('https://assets.breatheco.de/apis/fake/todos/user/pgdg',{
-        method:'GET'
-    })//busca informacion a la url dada con el metodo especificado
-    .then((response)=>response.json())// => convierto la respuesta buscada en un json => {"info":{},"results":[]} "hola"
-    .then((data)=> setListaApi(data))// => guardo el json en un espacio de memoria
-    .catch((error)=>console.log(error))// => te aviso si algo sale mal
-}
 
 
 
 
-// USEEFFECT HACE LAS VECES DE UN ONLOAD
 
-useEffect(()=>{
-    crearUsuario();
-    getList();
-    
-    
-    
-    
-},[])
+
 
 
 // GUARDAR LISTA EN LA API
@@ -135,16 +142,21 @@ function saveList() {
 
 
 
-// function deleteList() {
-//     fetch('https://assets.breatheco.de/apis/fake/todos/user/pgdg',{
-//         method:'DELETE',
-//         headers: {
-//             "Content-Type": "application/json",
-//           },
-//           body:JSON.stringify(listaApi),
-//     })
+
+
+
+  
+    
+
+
+function deleteList() {
+    fetch('https://assets.breatheco.de/apis/fake/todos/user/pgdg',{
+        method:'DELETE',
+       
+    })
  
-// }
+    useEffect(()=>{},[]);
+}
 
 
 
@@ -175,7 +187,7 @@ function saveList() {
             </div>
             <div className="hojaAtras1 m-auto"></div>
             <div className="hojaAtras2 m-auto"></div>
-            <button className="btn btn-danger rounded-circle d-flex m-auto mt-3 borrado justify-content-center" ><i class="fa-solid fa-trash-can"></i></button>
+            <button className="btn btn-danger rounded-circle d-flex m-auto mt-3 borrado justify-content-center" onClick={deleteList()} ><i className="fa-solid fa-trash-can"></i></button>
             
             
         </div>

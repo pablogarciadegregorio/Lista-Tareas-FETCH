@@ -9,6 +9,8 @@ const Form = () => {
 // DECLARACIONDE ESTADOS    
     const[tarea,setTarea] = useState("");
     const[listaTareas, setListaTareas] = useState([]);
+    const[tareaApi, setTareaApi] = useState("");
+    const[listaApi, setListaApi] = useState([]);
     
 
 //  FORM SUBMIT 
@@ -29,9 +31,9 @@ console.log(listaTareas);
 
 // LISTA DE TAREAS
 
-let listaHTML = listaTareas.map(function(comanda, index) { 
+let listaHTML = listaTareas.map(function(task, index) { 
     
-    return (<li className="tarea list-group-item  pb-3 pt-3" key={index}>{comanda}<button className="botonBorrado float-end" onClick={()=> borrarTarea(comanda)}><i className="cruz fa-regular fa-circle-xmark  mt-2 mb-2"></i></button></li>)     
+    return (<li className="tarea list-group-item  pb-3 pt-3" key={index}>{task}<button className="botonBorrado float-end" onClick={()=> borrarTarea(task)}><i className="cruz fa-regular fa-circle-xmark  mt-2 mb-2"></i></button></li>)     
 })
 
 
@@ -51,7 +53,8 @@ function borrarTarea(tarea){
 
 // CREAR USUARIO DE LA API
 
-function createdData() {
+function crearUsuario() {
+    
     fetch('https://assets.breatheco.de/apis/fake/todos/user/pgdg',{
         method:'POST',
         headers: {
@@ -72,34 +75,42 @@ function getList() {
         method:'GET'
     })//busca informacion a la url dada con el metodo especificado
     .then((response)=>response.json())// => convierto la respuesta buscada en un json => {"info":{},"results":[]} "hola"
-    .then((data)=> {setListaTareas(data)
-                    console.log(data.label)})// => guardo el json en un espacio de memoria
+    .then((data)=> setListaApi(data))// => guardo el json en un espacio de memoria
     .catch((error)=>console.log(error))// => te aviso si algo sale mal
 }
+
+function mostrarData(data){
+    console.log(data);
+    return data;
+}
+
 
 // USEEFFECT HACE LAS VECES DE UN ONLOAD
 
 useEffect(()=>{
-    getList()
-    console.log(getList())
+    crearUsuario();
+    getList();
+    
+    
+    
 },[])
 
 
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<ACTUALIZACION, HAY QUE DESAROLLARLO>>>>>>>>>>>>>>>>>>>
 
-function saveList() {
-    fetch('https://assets.breatheco.de/apis/fake/todos/user/pgdg',{
-        method:'PUT',
-        headers: {
-            "Content-Type": "application/json",
-          },
-          body:[],
-    })
-    //busca informacion a la url dada con el metodo especificado
-    .then((response)=>response.json())// => convierto la respuesta buscada en un json => {"info":{},"results":[]} "hola"
-    .then((data)=>console.log(data))// => guardo el json en un espacio de memoria
-    .catch((error)=>console.log(error))// => te aviso si algo sale mal
-}
+// function saveList() {
+//     fetch('https://assets.breatheco.de/apis/fake/todos/user/pgdg',{
+//         method:'PUT',
+//         headers: {
+//             "Content-Type": "application/json",
+//           },
+//           body:[],
+//     })
+//     //busca informacion a la url dada con el metodo especificado
+//     .then((response)=>response.json())// => convierto la respuesta buscada en un json => {"info":{},"results":[]} "hola"
+//     .then((data)=>console.log(data))// => guardo el json en un espacio de memoria
+//     .catch((error)=>console.log(error))// => te aviso si algo sale mal
+// }
 
 
 
@@ -129,7 +140,7 @@ function saveList() {
             </div>
             <div className="hojaAtras1 m-auto"></div>
             <div className="hojaAtras2 m-auto"></div>
-            <button className="btn btn-success d-flex m-auto mt-3" onClick={createdData}>Crear Usuario</button>
+            {/* <button className="btn btn-success d-flex m-auto mt-3" onClick={crearUsuario}>Crear Usuario</button> */}
             
             
         </div>

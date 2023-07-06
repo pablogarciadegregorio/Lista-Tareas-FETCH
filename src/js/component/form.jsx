@@ -175,7 +175,7 @@ function saveList() {
             </div>
             <div className="hojaAtras1 m-auto"></div>
             <div className="hojaAtras2 m-auto"></div>
-            {/* <button className="btn btn-success d-flex m-auto mt-3" onClick={crearUsuario}>Crear Usuario</button> */}
+            <button className="btn btn-danger rounded-circle d-flex m-auto mt-3 borrado justify-content-center" ><i class="fa-solid fa-trash-can"></i></button>
             
             
         </div>

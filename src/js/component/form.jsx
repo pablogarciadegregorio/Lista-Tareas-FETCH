@@ -7,26 +7,32 @@ const Form = () => {
 
     
 // DECLARACIONDE ESTADOS    
-    const[tarea,setTarea] = useState("");
-    const[listaTareas, setListaTareas] = useState([]);
     const[tareaApi, setTareaApi] = useState("");
     const[listaApi, setListaApi] = useState([]);
     
 
 //  FORM SUBMIT 
     const handleSubmit = (e) => {
+        if (tareaApi != ""){
         e.preventDefault();
-        
+        saveList();
         setListaApi(listaApi.concat(tareaApi));
-        setTareaApi("");
-        document.getElementById("Form").reset();
         
+        console.log(tareaApi);
+        setTareaApi("");
+        
+        document.getElementById("Form").reset();
+        }
+
+        else { console.log("Introduce una tarea no vacía")}
         
     }
 
-    console.log(tareaApi);
     
     console.log(listaApi);
+    
+    
+   
     
 
 
@@ -48,11 +54,11 @@ let listaHTMLApi = listaApi.map(function(item, index) {
 
 })
 
-// {listaApi.map((item)=><li>{item.label}</li>)}
+
 
 
 // TAREAS PENDIENTES 
-let tareasPendientes = listaTareas.length;
+let tareasPendientes = listaApi.length;
 
 
 // BORRADO DE LISTADO
@@ -61,6 +67,8 @@ function borrarTarea(tarea){
     let tareaActual = tarea;
     let tareaBorrada = listaApi.filter((tarea) => tarea != tareaActual);
     setListaApi(tareaBorrada);
+    console.log(listaApi);
+    saveList();
 
 }
 
@@ -68,17 +76,18 @@ function borrarTarea(tarea){
 // CREAR USUARIO DE LA API
 
 function crearUsuario() {
-    
-    fetch('https://assets.breatheco.de/apis/fake/todos/user/pgdg',{
-        method:'POST',
-        headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify([]), // body data type must match "Content-Type" header
-    })//busca informacion a la url dada con el metodo especificado
-    .then((response)=>response.json())// => convierto la respuesta buscada en un json => {"info":{},"results":[]} "hola"
-    .then((data)=>console.log(data))// => guardo el json en un espacio de memoria
-    .catch((error)=>console.log(error))// => te aviso si algo sale mal
+    if (fetch('https://assets.breatheco.de/apis/fake/todos/user/pgdg') .then (resp => resp.status != 200)){
+        fetch('https://assets.breatheco.de/apis/fake/todos/user/pgdg',{
+            method:'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify([]), // body data type must match "Content-Type" header
+        })//busca informacion a la url dada con el metodo especificado
+        .then((response)=>response.json())// => convierto la respuesta buscada en un json => {"info":{},"results":[]} "hola"
+        .then((data)=>console.log(data))// => guardo el json en un espacio de memoria
+        .catch((error)=>console.log(error))// => te aviso si algo sale mal
+    }
 }
 
 
@@ -104,32 +113,45 @@ useEffect(()=>{
     
     
     
+    
 },[])
 
 
-// <<<<<<<<<<<<<<<<<<<<<<<<<<<ACTUALIZACION, HAY QUE DESAROLLARLO>>>>>>>>>>>>>>>>>>>
+// GUARDAR LISTA EN LA API
 
-// function saveList() {
+function saveList() {
+    fetch('https://assets.breatheco.de/apis/fake/todos/user/pgdg',{
+        method:'PUT',
+        headers: {
+            "Content-Type": "application/json",
+          },
+          body:JSON.stringify(listaApi),
+    })
+    //busca informacion a la url dada con el metodo especificado
+    .then((response)=>response.json())// => convierto la respuesta buscada en un json => {"info":{},"results":[]} "hola"
+    .then((data)=>console.log(data))// => guardo el json en un espacio de memoria
+    .catch((error)=>console.log(error))// => te aviso si algo sale mal
+}
+
+
+
+// function deleteList() {
 //     fetch('https://assets.breatheco.de/apis/fake/todos/user/pgdg',{
-//         method:'PUT',
+//         method:'DELETE',
 //         headers: {
 //             "Content-Type": "application/json",
 //           },
-//           body:[],
+//           body:JSON.stringify(listaApi),
 //     })
-//     //busca informacion a la url dada con el metodo especificado
-//     .then((response)=>response.json())// => convierto la respuesta buscada en un json => {"info":{},"results":[]} "hola"
-//     .then((data)=>console.log(data))// => guardo el json en un espacio de memoria
-//     .catch((error)=>console.log(error))// => te aviso si algo sale mal
+ 
 // }
-
 
 
 
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>
 
 
-                                                                                                                                            
+                                                                                                                                                        // [{"label":"sample task","done":false}]                                                                                                                                 
 
     return (
     <>
@@ -139,7 +161,7 @@ useEffect(()=>{
             <div className="contenedor container m-auto">
                 
                 <form className="formulario" id="Form" onSubmit={handleSubmit} >
-                    <input type="text" className="float-left p-4 pb-0"  placeholder=" &#x1F589; Añade una nueva tarea " onChange={(e) => setTareaApi(`{label:  ${e.target.value}, done: false}`)}></input>
+                    <input type="text" className="float-left p-4 pb-0"  placeholder=" &#x1F589; Añade una nueva tarea " onChange={(e) => setTareaApi({label:  e.target.value, done: false})}></input>
                 </form>
                 <hr/>
                 <ul className="p-4 pt-0 mb-0">

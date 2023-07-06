@@ -73,3 +73,9 @@ button{
     border-color: rgb(218, 218, 218);
     border-width: 1px;
   }
+
+  .borrado{
+    width: 30px;
+    height: 30px;
+
+  }

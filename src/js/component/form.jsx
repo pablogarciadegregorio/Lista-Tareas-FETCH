@@ -43,22 +43,9 @@ useEffect(()=>{      // Agregamos useEffect:  escucha los cambios de la lista y 
 },[listaApi])
 
 
-    
-    
-   
-    
-
-
-
- 
-
 
 // LISTA DE TAREAS
 
-// let listaHTML = listaTareas.map(function(task, index) { 
-    
-//     return (<li className="tarea list-group-item  pb-3 pt-3" key={index}>{task}<button className="botonBorrado float-end" onClick={()=> borrarTarea(task)}><i className="cruz fa-regular fa-circle-xmark  mt-2 mb-2"></i></button></li>)     
-// })
 
 let listaHTMLApi = listaApi.map(function(item, index) {
 
@@ -85,13 +72,21 @@ function borrarTarea(tarea){
 }
 
 
+
+
 // TRAER LISTA DE TAREAS DE LA API
+
+// ¿CÓMO FUNCIONAN?
+// Al principio carga la página con el getList. Si no tiene usuario, lo crea en el .then (LINEA 100).
+// saveList se ejcuta con un useEffect en la linea 40, controlando si  listaApi  cambia. Si es así, hace saveList.
+//al borrar con deleteList, si borra efectivamente (response=.ok en la linea 160), crea un nuevo usuario.
+
 
 function getList() {
     fetch('https://assets.breatheco.de/apis/fake/todos/user/pgdg',{
         method:'GET'
     })//busca informacion a la url dada con el metodo especificado
-    .then((response)=> { if (!response.ok) {crearUsuario()} return response.json()})// => convierto la respuesta buscada en un json y si no existe el usuario lo creo
+    .then((response)=> { if (!response.ok) {crearUsuario()} return response.json()})// =>  si no existe el usuario lo creo y convierto la respuesta buscada en un json 
     .then((data)=> setListaApi(data))// => guardo el json en un espacio de memoria
     .catch((error)=>console.log(error))// => te aviso si algo sale mal
 }

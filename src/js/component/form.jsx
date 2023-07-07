@@ -109,7 +109,12 @@ function crearUsuario() {
             },
             body: JSON.stringify([]), // body data type must match "Content-Type" header
         })//busca informacion a la url dada con el metodo especificado
-        .then((response)=>response.json())// => convierto la respuesta buscada en un json => {"info":{},"results":[]} "hola"
+        .then((response) => {
+            if (response.ok) {
+              getList() ; // LLAMA NUEVAMENTE A LA LISTA SI SE CREÓ EL USUARIO CORRECTAMENTE 
+            }
+            return response.json();
+          })// => convierto la respuesta buscada en un json => {"info":{},"results":[]} "hola"
         .then((data)=>console.log(data))// => guardo el json en un espacio de memoria
         .catch((error)=>console.log(error))// => te aviso si algo sale mal
     }
@@ -157,12 +162,14 @@ function deleteList() {
           },
           body:JSON.stringify([]),
 })
+.then((response) =>{if (response.ok) {crearUsuario()}; return response.json }) //   MANEJAMOS LO QUE QUEREMOS QUE SUCEDA SI SALE TODO BIEN, SI EL DELETE ES CORRECTO SE LLAMA A LA FUNCION QUE CREA EL USUARIO 
+.catch((error) => console.log(error)); // NOS AVISA DEL ERROR 
 }
 
- const handleDelete = () => {
-
-    deleteList();
- }
+const handleDelete = () => {
+    deleteList()
+    alert('Lista eliminada exitosamente, se ha creado una nueva lista') 
+}
 
 
 

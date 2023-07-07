@@ -149,19 +149,19 @@ function saveList() {
     
 
 
-// function deleteList() {
-//     fetch('https://assets.breatheco.de/apis/fake/todos/user/pgdg',{
-//         method:'PUT',
-// })
-// }
+function deleteList() {
+    fetch('https://assets.breatheco.de/apis/fake/todos/user/pgdg',{
+        method:'DELETE',
+        headers: {
+            "Content-Type": "application/json",
+          },
+          body:JSON.stringify([]),
+})
+}
 
  const handleDelete = () => {
 
-    setListaApi([]);
-    saveList();
-    // deleteList();
-
-     alert('Recarga la pagina para crear una nueva lista')
+    deleteList();
  }
 
 

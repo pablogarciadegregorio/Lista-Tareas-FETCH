@@ -149,14 +149,20 @@ function saveList() {
     
 
 
-function deleteList() {
-    fetch('https://assets.breatheco.de/apis/fake/todos/user/pgdg',{
-        method:'DELETE',
-       
-    })
- 
-    useEffect(()=>{},[]);
-}
+// function deleteList() {
+//     fetch('https://assets.breatheco.de/apis/fake/todos/user/pgdg',{
+//         method:'PUT',
+// })
+// }
+
+ const handleDelete = () => {
+
+    setListaApi([]);
+    saveList();
+    // deleteList();
+
+     alert('Recarga la pagina para crear una nueva lista')
+ }
 
 
 
@@ -187,7 +193,7 @@ function deleteList() {
             </div>
             <div className="hojaAtras1 m-auto"></div>
             <div className="hojaAtras2 m-auto"></div>
-            <button className="btn btn-danger rounded-circle d-flex m-auto mt-3 borrado justify-content-center" onClick={deleteList()} ><i className="fa-solid fa-trash-can"></i></button>
+            <button className="btn btn-danger rounded-circle d-flex m-auto mt-3 borrado justify-content-center" onClick={handleDelete} ><i className="fa-solid fa-trash-can"></i></button>
             
             
         </div>
